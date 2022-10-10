@@ -2,13 +2,14 @@
 
 
 const cidr2range = () => {
-    const cidrs = document.getElementById('cidr2range_cidr').value;
+    let cidrs = document.getElementById('cidr2range_cidr').value;
     if (cidrs) {
         document.getElementById('cidr2range_range').textContent = '';
-        cidrs.split('\n').map(c => c.trim()).filter(c => c.length > 0).forEach(c => {
+        cidrs = cidrs.split('\n').map(c => c.trim()).filter(c => c.length > 0).sort(function (a, b) {
+            return (convertToBinaryNum((a.split('/'))[0].split('.'))) >= (convertToBinaryNum((b.split('/'))[0].split('.'))) ? 1 : -1;
+        }).forEach(c => {
             document.getElementById('cidr2range_range').textContent += convertToIp(getIpRange(c)['min']) + ' - ' + convertToIp(getIpRange(c)['max']) + '\n';
         });
-        // document.getElementById('cidr2range_range').focus();
     }
 }
 
@@ -22,7 +23,6 @@ const range2cidr = () => {
             iprange2cidr(
                 IPv4.StringToInt(startIp), IPv4.StringToInt(endIp)
             ).join('\n');
-        // document.getElementById('range2cidr_cidr').focus();
     }
 }
 

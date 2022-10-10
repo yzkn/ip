@@ -1,14 +1,42 @@
 // Copyright (c) 2022 YA-androidapp(https://github.com/YA-androidapp) All rights reserved.
 
 
+const ip2int = (ip) => {
+    const dividedIp = ip.split('.').reverse();
+    const byte = 8;
+
+    return dividedIp.reduce((accumulator, v, idx) => {
+        const binary = (parseInt(v, 10) << (byte * idx)) >>> 0;
+        return accumulator + binary;
+    }, 0);
+}
+
+
 const cidr2range = () => {
     let cidrs = document.getElementById('cidr2range_cidr').value;
     if (cidrs) {
         document.getElementById('cidr2range_range').textContent = '';
+
+        ranges = [];
+
         cidrs = cidrs.split('\n').map(c => c.trim()).filter(c => c.length > 0).sort(function (a, b) {
             return (convertToBinaryNum((a.split('/'))[0].split('.'))) >= (convertToBinaryNum((b.split('/'))[0].split('.'))) ? 1 : -1;
         }).forEach(c => {
-            document.getElementById('cidr2range_range').textContent += convertToIp(getIpRange(c)['min']) + ' - ' + convertToIp(getIpRange(c)['max']) + '\n';
+            // document.getElementById('cidr2range_range').textContent += convertToIp(getIpRange(c)['min']) + ' - ' + convertToIp(getIpRange(c)['max']) + '\n';
+            ranges.push({ 'min': convertToIp(getIpRange(c)['min']), 'max': convertToIp(getIpRange(c)['max']) })
+        });
+
+        for (let index = ranges.length - 2; index >= 0; index--) {
+            const end = ranges[index]['max'];
+            const start = ranges[index + 1]['min'];
+            if (ip2int(end) + 1 == ip2int(start)) {
+                ranges[index]['max'] = ranges[index + 1]['max'];
+                ranges[index + 1] = null;
+            }
+        }
+
+        ranges.filter(c => c != null).forEach(c => {
+            document.getElementById('cidr2range_range').textContent += c['min'] + ' - ' + c['max'] + '\n';
         });
     }
 }

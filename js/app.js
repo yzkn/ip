@@ -32,7 +32,7 @@ const validateIp = (ipaddr) => {
 
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    fetch('https://ipinfo.io?callback')
+    fetch('https://ipinfo.io?callback&token=1a77db403fe101')
         .then(res => res.json())
         .then(json => document.getElementById('myip').value = json.ip);
 

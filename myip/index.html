@@ -11,7 +11,7 @@
 
 <body>
     <script>
-        fetch('https://ipinfo.io?callback')
+        fetch('https://ipinfo.io?callback&token=1a77db403fe101')
             .then(res => res.json())
             .then(json => document.getElementsByTagName('body')[0].textContent = json.ip);
     </script>

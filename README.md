@@ -2,7 +2,7 @@
 
 ---
 
-[IPアドレスに関するツール群](https://ya-androidapp.github.io/ip/)
+[IPアドレスに関するツール群](https://yzkn.github.io/ip/)
 
 ---
 
